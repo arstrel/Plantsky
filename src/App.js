@@ -3,8 +3,15 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
+import PlantsList from './PlantsList';
 import ProTip from './ProTip';
 import Typography from '@mui/material/Typography';
+import awsExports from './aws-exports';
+
+// import Amplify, { API, graphqlOperation } from 'aws-amplify';
+
+
+// Amplify.configure(awsExports);
 
 function Copyright() {
   return (
@@ -26,6 +33,7 @@ export default function App() {
         <Typography variant="h4" component="h1" gutterBottom>
           Honey, Water the Plantsky!
         </Typography>
+        <PlantsList />
         <ProTip />
         <Copyright />
       </Box>
