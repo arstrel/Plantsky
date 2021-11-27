@@ -3,7 +3,7 @@
   "serviceConfiguration": {
     "apiName": "Plantsky",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/tmp/amplify-4688dede-3c33-49d8-b041-f581a3315dee/amplify/backend/api/Plantsky/schema.graphql",
+    "gqlSchemaPath": "/tmp/amplify-10676451-7e83-4220-93d2-8a6c5eeebd6d/amplify/backend/api/Plantsky/schema.graphql",
     "defaultAuthType": {
       "mode": "API_KEY",
       "keyDescription": "api key description",
@@ -12,6 +12,10 @@
     "additionalAuthTypes": [
       {
         "mode": "AWS_IAM"
+      },
+      {
+        "mode": "AMAZON_COGNITO_USER_POOLS",
+        "cognitoUserPoolId": "authPlantsky"
       }
     ],
     "conflictResolution": {

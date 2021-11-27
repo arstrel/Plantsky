@@ -13,4 +13,8 @@ type Plant @model @auth(rules: [{allow: public}]) {
   imageURL: String
   lastWatered: AWSDateTime
   wateringPeriodHours: Int
+  detailsURL: String
+  description: String
+  belongsTo: AWSEmail
 }
+ 

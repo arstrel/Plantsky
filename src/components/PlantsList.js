@@ -5,14 +5,17 @@ import Grid from '@mui/material/Grid';
 import { Plant } from 'models';
 import PlantCard from 'components/PlantCard';
 
-export default function PlantsList() {
+export default function PlantsList({ user }) {
   const [plants, setPlants] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const plants = await DataStore.query(Plant);
+      const plants = await DataStore.query(Plant, (p) =>
+        p.belongsTo('eq', user.attributes.email)
+      );
       setPlants(plants);
     })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

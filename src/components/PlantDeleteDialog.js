@@ -31,7 +31,7 @@ export default function PlantDeleteDialog({
         show: true,
       });
 
-      setTimeout(setCurrentPlant({}), 4000);
+      setTimeout(() => setCurrentPlant({}), 2500);
     } catch (e) {
       setDeleteStatus({
         success: false,

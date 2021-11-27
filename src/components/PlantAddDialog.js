@@ -20,22 +20,39 @@ const initialSaveStatusState = {
   show: false,
 };
 
-export default function PlantAddDialog({ isOpened, onClose }) {
+export default function PlantAddDialog({ user, isOpened, onClose }) {
   const [saveStatus, setSaveStatus] = useState(initialSaveStatusState);
+  const [isSaveButtonActive, setIsSaveButtonActive] = useState(false);
   const [formValues, setFormValues] = useState({
     name: '',
     location: '',
     imageURL: '',
+    detailsURL: '',
+    description: '',
     lastWatered: new Date().toISOString(),
     wateringPeriodHours: '',
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormValues({
+    const updatedFormValues = {
       ...formValues,
       [name]: value,
-    });
+    };
+    setFormValues(updatedFormValues);
+
+    if (
+      updatedFormValues.name === '' &&
+      updatedFormValues.location === '' &&
+      updatedFormValues.imageURL === '' &&
+      updatedFormValues.detailsURL === '' &&
+      updatedFormValues.description === '' &&
+      updatedFormValues.wateringPeriodHours === ''
+    ) {
+      setIsSaveButtonActive(false);
+    } else {
+      setIsSaveButtonActive(true);
+    }
   };
   const handleDateChange = (value) => {
     setFormValues({
@@ -49,12 +66,12 @@ export default function PlantAddDialog({ isOpened, onClose }) {
 
   const onSave = async (e) => {
     e.preventDefault();
-    console.log(formValues);
     try {
-      const res = await DataStore.save(
+      await DataStore.save(
         new Plant({
           ...formValues,
           wateringPeriodHours: Number(formValues.wateringPeriodHours),
+          belongsTo: user.attributes.email,
         })
       );
       setSaveStatus({
@@ -128,11 +145,35 @@ export default function PlantAddDialog({ isOpened, onClose }) {
                 </Grid>
                 <Grid item sx={{ width: '100%' }}>
                   <TextField
+                    id="description"
+                    name="description"
+                    label="Description"
+                    type="text"
+                    value={formValues.description}
+                    onChange={handleInputChange}
+                    fullWidth
+                    multiline
+                    rows={5}
+                  />
+                </Grid>
+                <Grid item sx={{ width: '100%' }}>
+                  <TextField
                     id="imageURL"
                     name="imageURL"
                     label="Image URL"
                     type="text"
                     value={formValues.imageURL}
+                    onChange={handleInputChange}
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item sx={{ width: '100%' }}>
+                  <TextField
+                    id="detailsURL"
+                    name="detailsURL"
+                    label="External details URL"
+                    type="text"
+                    value={formValues.detailsURL}
                     onChange={handleInputChange}
                     fullWidth
                   />
@@ -161,7 +202,9 @@ export default function PlantAddDialog({ isOpened, onClose }) {
           </DialogContent>
           <DialogActions>
             <Button onClick={onClose}>Cancel</Button>
-            <Button onClick={onSave}>Save</Button>
+            <Button onClick={onSave} disabled={!isSaveButtonActive}>
+              Save
+            </Button>
           </DialogActions>
         </Dialog>
       </div>

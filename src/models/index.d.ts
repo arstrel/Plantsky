@@ -31,6 +31,9 @@ export declare class Plant {
   readonly imageURL?: string;
   readonly lastWatered?: string;
   readonly wateringPeriodHours?: number;
+  readonly detailsURL?: string;
+  readonly description?: string;
+  readonly belongsTo?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Plant, PlantMetaData>);

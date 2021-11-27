@@ -8,6 +8,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import PlantDeleteDialog from 'components/PlantDeleteDialog';
+import PlantDetailsDialog from 'components/PlantDetailsDialog';
 import PlantEditDialog from 'components/PlantEditDialog';
 import { computeStatus } from 'util/helpers/computePlantStatus';
 import formatDistance from 'date-fns/formatDistance';
@@ -17,34 +18,51 @@ export default function PlantCardHeader({ plant, setCurrentPlant }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isEditDialogOpened, setIsEditDialogOpened] = useState(false);
   const [isDeleteDialogOpened, setIsDeleteDialogOpened] = useState(false);
+  const [isDetailsDialogOpened, setIsDetailsDialogOpened] = useState(false);
 
   const isMenuOpen = Boolean(anchorEl);
+  // Details
+  const onDetailsDialogOpen = () => {
+    setIsDetailsDialogOpened(true);
+  };
+  const onDetailsDialogClose = () => {
+    setIsDetailsDialogOpened(false);
+  };
+  const onDetailsClick = () => {
+    onDetailsDialogOpen();
+    onMenuClose();
+  };
 
+  // Edit
   const onEditDialogOpen = () => {
     setIsEditDialogOpened(true);
   };
   const onEditDialogClose = () => {
     setIsEditDialogOpened(false);
   };
+  const onEditClick = () => {
+    onEditDialogOpen();
+    onMenuClose();
+  };
+
+  //Delete
   const onDeleteDialogOpen = () => {
     setIsDeleteDialogOpened(true);
   };
   const onDeleteDialogClose = () => {
     setIsDeleteDialogOpened(false);
   };
+  const onDeleteClick = () => {
+    onDeleteDialogOpen();
+    onMenuClose();
+  };
+
+  // Menu
   const onMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const onMenuClose = () => {
     setAnchorEl(null);
-  };
-  const onEditClick = () => {
-    onEditDialogOpen();
-    onMenuClose();
-  };
-  const onDeleteClick = () => {
-    onDeleteDialogOpen();
-    onMenuClose();
   };
 
   const wateredAgo = formatDistance(new Date(plant.lastWatered), new Date(), {
@@ -111,6 +129,7 @@ export default function PlantCardHeader({ plant, setCurrentPlant }) {
           'aria-labelledby': 'basic-button',
         }}
       >
+        <MenuItem onClick={onDetailsClick}>Details</MenuItem>
         <MenuItem onClick={onEditClick}>Edit</MenuItem>
         <Divider />
         <MenuItem onClick={onDeleteClick} sx={{ color: 'error.main' }}>
@@ -128,6 +147,11 @@ export default function PlantCardHeader({ plant, setCurrentPlant }) {
         isOpened={isDeleteDialogOpened}
         onClose={onDeleteDialogClose}
         setCurrentPlant={setCurrentPlant}
+      />
+      <PlantDetailsDialog
+        plant={plant}
+        isOpened={isDetailsDialogOpened}
+        onClose={onDetailsDialogClose}
       />
     </>
   );

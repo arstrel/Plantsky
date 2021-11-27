@@ -49,6 +49,7 @@ export default function PlantCard({ plant }) {
           height="220"
           image={currentPlant.imageURL}
           alt={currentPlant.name}
+          sx={{ objectFit: 'contain' }}
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">

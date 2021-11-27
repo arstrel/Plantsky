@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
+import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -14,29 +14,28 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
-const TopNav = () => {
+const TopNav = ({ signOut, user }) => {
   const [anchorElNav, setAnchorElNav] = useState(null);
-  const [anchorElUser, setAnchorElUser] = useState(null);
   const [isAddDialogOpened, setIsAddDialogOpened] = useState(false);
+
+  const [anchorElUser, setAnchorElUser] = useState(null);
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleCloseUserMenu = () => {
+    setAnchorElUser(null);
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-
   const onOpenAddDialog = () => {
+    handleCloseUserMenu();
     setIsAddDialogOpened(true);
   };
   const onCloseAddDialog = () => {
@@ -94,27 +93,23 @@ const TopNav = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}
+            sx={{ flexGrow: 0, display: { xs: 'flex', md: 'none' } }}
           >
             Plantsky
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            <Button
-              onClick={onOpenAddDialog}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              Add plant
-            </Button>
-            <PlantAddDialog
-              isOpened={isAddDialogOpened}
-              onClose={onCloseAddDialog}
-            />
-          </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: 'flex',
+              justifyContent: 'flex-end',
+            }}
+          >
+            <Tooltip title="Open actions">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt="user">
+                  {user.attributes.email.slice(0, 1).toUpperCase()}
+                </Avatar>
               </IconButton>
             </Tooltip>
             <Menu
@@ -133,11 +128,18 @@ const TopNav = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={onOpenAddDialog}>
+                <Typography textAlign="center">Add Plant</Typography>
+              </MenuItem>
+              <Divider />
+              <MenuItem onClick={signOut}>
+                <Typography textAlign="center">Sign Out</Typography>
+              </MenuItem>
+              <PlantAddDialog
+                user={user}
+                isOpened={isAddDialogOpened}
+                onClose={onCloseAddDialog}
+              />
             </Menu>
           </Box>
         </Toolbar>
