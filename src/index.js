@@ -5,7 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import reportWebVitals from './reportWebVitals';
-import theme from './theme';
+import theme from 'styles/theme';
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
