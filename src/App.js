@@ -17,7 +17,7 @@ Amplify.configure(awsExports);
 
 function App(props) {
   const { signOut, user } = props;
-  // console.log("trigger build comment")
+
   return (
     <>
       <TopNav signOut={signOut} user={user} />

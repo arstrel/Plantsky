@@ -9,6 +9,9 @@ export default function PlantsList({ user }) {
   const [plants, setPlants] = useState([]);
 
   useEffect(() => {
+    if (!user) {
+      return;
+    }
     (async () => {
       const plants = await DataStore.query(Plant, (p) =>
         p.belongsTo('eq', user.attributes.email)
@@ -16,7 +19,7 @@ export default function PlantsList({ user }) {
       setPlants(plants);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user]);
 
   return (
     <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>

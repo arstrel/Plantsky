@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import Button from '@mui/material/Button';
@@ -80,6 +80,11 @@ export default function PlantEditDialog({
       onClose();
     }, 2000);
   };
+
+  useEffect(() => {
+    setFormValues(plant);
+  }, [plant]);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <div>
