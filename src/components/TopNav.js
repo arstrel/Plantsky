@@ -128,10 +128,13 @@ const TopNav = ({ signOut, user }) => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem onClick={onOpenAddDialog}>
+              <MenuItem
+                onClick={onOpenAddDialog}
+                sx={{ display: { xs: 'none', md: 'flex' } }}
+              >
                 <Typography textAlign="center">Add Plant</Typography>
               </MenuItem>
-              <Divider />
+              <Divider sx={{ display: { xs: 'none', md: 'flex' } }} />
               <MenuItem onClick={signOut}>
                 <Typography textAlign="center">Sign Out</Typography>
               </MenuItem>
