@@ -14,12 +14,6 @@
     "categories": {
       "auth": {
         "Plantsky": {}
-      },
-      "function": {
-        "plants": {
-          "deploymentBucketName": "amplify-plantsky-staging-221837-deployment",
-          "s3Key": "amplify-builds/plants-76572f69345a344c764e-build.zip"
-        }
       }
     }
   }

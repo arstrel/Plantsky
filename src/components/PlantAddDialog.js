@@ -13,6 +13,7 @@ import Grid from '@mui/material/Grid';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { Plant } from 'models';
 import TextField from '@mui/material/TextField';
+import add from 'date-fns/add';
 
 const initialSaveStatusState = {
   success: false,
@@ -72,6 +73,9 @@ export default function PlantAddDialog({ user, isOpened, onClose }) {
           ...formValues,
           wateringPeriodHours: Number(formValues.wateringPeriodHours),
           belongsTo: user.attributes.email,
+          nextWater: add(new Date(formValues.lastWatered), {
+            hours: formValues.wateringPeriodHours,
+          }).toISOString(),
         })
       );
       setSaveStatus({

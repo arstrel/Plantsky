@@ -21,7 +21,7 @@ function App(props) {
   return (
     <>
       <TopNav signOut={signOut} user={user} />
-      <Container maxWidth="md" sx={{ minHeight: '90vh' }}>
+      <Container sx={{ minHeight: '90vh' }}>
         <Box sx={{ my: 4, height: '100%' }}>
           <Typography variant="h4" component="h1" gutterBottom>
             Honey, Water the Plantsky!

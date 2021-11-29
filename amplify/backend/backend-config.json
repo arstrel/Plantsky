@@ -67,11 +67,5 @@
       "dependsOn": []
     }
   },
-  "function": {
-    "plants": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda"
-    }
-  }
+  "function": {}
 }
