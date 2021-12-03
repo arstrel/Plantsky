@@ -1,0 +1,26 @@
+{
+  "permissions": {
+    "api": {
+      "Plantsky": [
+        "Query",
+        "Mutation"
+      ]
+    },
+    "auth": {
+      "Plantsky": [
+        "read"
+      ]
+    },
+    "storage": {
+      "MailingList:@model(appsync)": [
+        "read",
+        "update"
+      ],
+      "Plant:@model(appsync)": [
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": []
+}
