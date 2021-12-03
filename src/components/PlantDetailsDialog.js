@@ -21,7 +21,7 @@ export default function PlantDetailsDialog({ plant, isOpened, onClose }) {
   const nextWaterIn = formatDistanceStrict(
     new Date(plant.lastWatered),
     add(new Date(plant.lastWatered), {
-      hours: plant.wateringPeriodHours,
+      days: plant.waterIntervalDays,
     })
   );
 
@@ -75,7 +75,7 @@ export default function PlantDetailsDialog({ plant, isOpened, onClose }) {
             </Grid>
             <Grid item sx={{ width: '100%' }}>
               <DialogContentText>
-                Water every {plant.wateringPeriodHours} hours
+                Water every {plant.waterIntervalDays} days
               </DialogContentText>
             </Grid>
             <Grid item sx={{ width: '100%' }}>

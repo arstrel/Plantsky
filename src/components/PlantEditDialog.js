@@ -10,8 +10,11 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
+import InputLabel from '@mui/material/InputLabel';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import MenuItem from '@mui/material/MenuItem';
 import { Plant } from 'models';
+import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 
 const initialSaveStatusState = {
@@ -51,6 +54,7 @@ export default function PlantEditDialog({
     e.preventDefault();
     try {
       const original = await DataStore.query(Plant, plant.id);
+
       const updated = await DataStore.save(
         Plant.copyOf(original, (updated) => {
           updated.name = formValues.name;
@@ -59,9 +63,10 @@ export default function PlantEditDialog({
           updated.detailsURL = formValues.detailsURL;
           updated.description = formValues.description;
           updated.lastWatered = formValues.lastWatered;
-          updated.wateringPeriodHours = Number(formValues.wateringPeriodHours);
+          updated.waterIntervalDays = formValues.waterIntervalDays;
         })
       );
+
       setSaveStatus({
         success: true,
         text: 'Changes saved successfully',
@@ -69,6 +74,7 @@ export default function PlantEditDialog({
       });
       setCurrentPlant(updated);
     } catch (e) {
+      console.log(e);
       setSaveStatus({
         success: false,
         text: 'Something went wrong',
@@ -178,15 +184,23 @@ export default function PlantEditDialog({
                   />
                 </Grid>
                 <Grid item>
-                  <TextField
-                    id="wateringPeriodHours"
-                    name="wateringPeriodHours"
-                    label="Water every __ hours"
-                    type="number"
-                    value={formValues.wateringPeriodHours}
+                  <InputLabel id="watering-interval-days">
+                    Watering interval in days
+                  </InputLabel>
+                  <Select
+                    name="waterIntervalDays"
+                    labelId="watering-interval-days"
+                    id="waterIntervalDays"
+                    value={formValues.waterIntervalDays}
+                    label="Watering interval in days"
                     onChange={handleInputChange}
-                    fullWidth
-                  />
+                  >
+                    {Array.from({ length: 30 }, (_, i) => i + 1).map((num) => (
+                      <MenuItem key={num} value={num}>
+                        {num}
+                      </MenuItem>
+                    ))}
+                  </Select>
                 </Grid>
               </Grid>
             </form>

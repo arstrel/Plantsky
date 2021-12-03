@@ -1,3 +1,4 @@
+import { MailingList, Plant } from 'models';
 import React, { useState } from 'react';
 
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -10,10 +11,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
+import InputLabel from '@mui/material/InputLabel';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { Plant } from 'models';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import add from 'date-fns/add';
+import isEmpty from 'lodash/isEmpty';
 
 const initialSaveStatusState = {
   success: false,
@@ -31,7 +35,7 @@ export default function PlantAddDialog({ user, isOpened, onClose }) {
     detailsURL: '',
     description: '',
     lastWatered: new Date().toISOString(),
-    wateringPeriodHours: '',
+    waterIntervalDays: 7,
   });
 
   const handleInputChange = (e) => {
@@ -47,8 +51,7 @@ export default function PlantAddDialog({ user, isOpened, onClose }) {
       updatedFormValues.location === '' &&
       updatedFormValues.imageURL === '' &&
       updatedFormValues.detailsURL === '' &&
-      updatedFormValues.description === '' &&
-      updatedFormValues.wateringPeriodHours === ''
+      updatedFormValues.description === ''
     ) {
       setIsSaveButtonActive(false);
     } else {
@@ -71,13 +74,24 @@ export default function PlantAddDialog({ user, isOpened, onClose }) {
       await DataStore.save(
         new Plant({
           ...formValues,
-          wateringPeriodHours: Number(formValues.wateringPeriodHours),
+          waterIntervalDays: formValues.waterIntervalDays,
           belongsTo: user.attributes.email,
           nextWater: add(new Date(formValues.lastWatered), {
-            hours: formValues.wateringPeriodHours,
+            days: formValues.waterIntervalDays,
           }).toISOString(),
         })
       );
+      const existingMailingRecord = await DataStore.query(MailingList, (r) =>
+        r.email('eq', user.attributes.email)
+      );
+
+      if (isEmpty(existingMailingRecord)) {
+        await DataStore.save(
+          new MailingList({
+            email: user.attributes.email,
+          })
+        );
+      }
       setSaveStatus({
         success: true,
         text: 'New Plant saved successfully',
@@ -191,15 +205,23 @@ export default function PlantAddDialog({ user, isOpened, onClose }) {
                   />
                 </Grid>
                 <Grid item>
-                  <TextField
-                    id="wateringPeriodHours"
-                    name="wateringPeriodHours"
-                    label="Water every __ hours"
-                    type="number"
-                    value={formValues.wateringPeriodHours}
+                  <InputLabel id="watering-interval-days">
+                    Watering interval in days
+                  </InputLabel>
+                  <Select
+                    name="waterIntervalDays"
+                    labelId="watering-interval-days"
+                    id="waterIntervalDays"
+                    value={formValues.waterIntervalDays}
+                    label="Watering interval in days"
                     onChange={handleInputChange}
-                    fullWidth
-                  />
+                  >
+                    {Array.from({ length: 30 }, (_, i) => i + 1).map((num) => (
+                      <MenuItem key={num} value={num}>
+                        {num}
+                      </MenuItem>
+                    ))}
+                  </Select>
                 </Grid>
               </Grid>
             </form>

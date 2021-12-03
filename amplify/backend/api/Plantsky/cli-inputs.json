@@ -3,7 +3,7 @@
   "serviceConfiguration": {
     "apiName": "Plantsky",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/tmp/amplify-ffbfb3ec-7349-420b-8e30-84bbca3f9bdd/amplify/backend/api/Plantsky/schema.graphql",
+    "gqlSchemaPath": "/tmp/amplify-40ccefda-ef24-498f-814d-b1b8c0e769af/amplify/backend/api/Plantsky/schema.graphql",
     "defaultAuthType": {
       "mode": "API_KEY",
       "keyDescription": "api key description",

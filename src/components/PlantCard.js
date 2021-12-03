@@ -60,7 +60,7 @@ export default function PlantCard({ plant }) {
           </Typography>
           <Typography variant="body2" color="text.secondary">
             To be watered every{' '}
-            <strong>{currentPlant.wateringPeriodHours}</strong> hours
+            <strong>{currentPlant.waterIntervalDays}</strong> days
           </Typography>
         </CardContent>
         <CardActions>

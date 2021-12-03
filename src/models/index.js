@@ -4,8 +4,9 @@ import { schema } from './schema';
 
 
 
-const { Plant } = initSchema(schema);
+const { MailingList, Plant } = initSchema(schema);
 
 export {
+  MailingList,
   Plant
 };

@@ -1,5 +1,71 @@
 export const schema = {
     "models": {
+        "MailingList": {
+            "name": "MailingList",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "lastMessageSent": {
+                    "name": "lastMessageSent",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "email": {
+                    "name": "email",
+                    "isArray": false,
+                    "type": "AWSEmail",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "MailingLists",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "public",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "Plant": {
             "name": "Plant",
             "fields": {
@@ -66,17 +132,17 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "wateringPeriodHours": {
-                    "name": "wateringPeriodHours",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
-                    "attributes": []
-                },
                 "firstNotificationSentAt": {
                     "name": "firstNotificationSentAt",
                     "isArray": false,
                     "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "waterIntervalDays": {
+                    "name": "waterIntervalDays",
+                    "isArray": false,
+                    "type": "Int",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -125,5 +191,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "2c425f0b3a4b697a2a0710414f2095d5"
+    "version": "90c59c57ac2d8f1f2485107fa96b00eb"
 };

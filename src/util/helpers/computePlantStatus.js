@@ -8,16 +8,17 @@ import sub from 'date-fns/sub';
 
 export const computeStatus = (plant) => {
   const now = new Date();
-  const lastWatered = new Date(plant.lastWatered);
-  const wateringDatetime = add(lastWatered, {
-    hours: plant.wateringPeriodHours,
-  });
-  const fifthOfWateringPeriod = Math.floor(plant.wateringPeriodHours / 5);
+  const wateringDatetime = new Date(plant.nextWater);
+
+  const fifthOfWateringPeriod = Math.max(
+    Math.floor(plant.waterIntervalDays / 5),
+    1
+  );
   const fifthBeforeWatering = sub(wateringDatetime, {
-    hours: fifthOfWateringPeriod,
+    days: fifthOfWateringPeriod,
   });
   const fifthAfterWatering = add(wateringDatetime, {
-    hours: fifthOfWateringPeriod,
+    days: fifthOfWateringPeriod,
   });
 
   // now is before (watering time minus fifth) = green; OK
