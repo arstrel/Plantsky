@@ -22,14 +22,5 @@ export type AmplifyDependentResourcesAttributes = {
             "BucketName": "string",
             "Region": "string"
         }
-    },
-    "function": {
-        "sendPlantWateringNotifications": {
-            "Name": "string",
-            "Arn": "string",
-            "Region": "string",
-            "LambdaExecutionRole": "string",
-            "CloudWatchEventRule": "string"
-        }
     }
 }

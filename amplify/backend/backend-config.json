@@ -67,29 +67,5 @@
       "dependsOn": []
     }
   },
-  "function": {
-    "sendPlantWateringNotifications": {
-      "build": true,
-      "providerPlugin": "awscloudformation",
-      "service": "Lambda",
-      "dependsOn": [
-        {
-          "category": "api",
-          "resourceName": "Plantsky",
-          "attributes": [
-            "GraphQLAPIIdOutput",
-            "GraphQLAPIEndpointOutput",
-            "GraphQLAPIKeyOutput"
-          ]
-        },
-        {
-          "category": "auth",
-          "resourceName": "Plantsky",
-          "attributes": [
-            "UserPoolId"
-          ]
-        }
-      ]
-    }
-  }
+  "function": {}
 }
