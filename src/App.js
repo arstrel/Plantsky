@@ -10,7 +10,7 @@ import PlantsList from 'components/PlantsList';
 import ProTip from 'components/ProTip';
 import TopNav from 'components/TopNav';
 import Typography from '@mui/material/Typography';
-import awsExports from 'aws-exports.js';
+import awsExports from './aws-exports';
 import { withAuthenticator } from '@aws-amplify/ui-react';
 
 Amplify.configure(awsExports);
