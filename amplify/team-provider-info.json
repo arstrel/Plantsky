@@ -14,6 +14,12 @@
     "categories": {
       "auth": {
         "Plantsky": {}
+      },
+      "function": {
+        "sendPlantWateringNotifications": {
+          "deploymentBucketName": "amplify-plantsky-staging-221837-deployment",
+          "s3Key": "amplify-builds/sendPlantWateringNotifications-6144786e6563314c4b31-build.zip"
+        }
       }
     }
   }
