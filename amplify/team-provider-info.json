@@ -16,9 +16,10 @@
         "Plantsky": {}
       },
       "function": {
-        "sendPlantWateringNotifications": {
+        "wateringNotification": {
+          "email": "arstrel@gmail.com",
           "deploymentBucketName": "amplify-plantsky-staging-221837-deployment",
-          "s3Key": "amplify-builds/sendPlantWateringNotifications-6144786e6563314c4b31-build.zip"
+          "s3Key": "amplify-builds/wateringNotification-706b3467722f48667175-build.zip"
         }
       }
     }

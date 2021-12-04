@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "api": {
+      "Plantsky": [
+        "Query",
+        "Mutation"
+      ]
+    },
+    "storage": {
+      "MailingList:@model(appsync)": [
+        "read",
+        "update"
+      ],
+      "Plant:@model(appsync)": [
+        "read",
+        "update"
+      ]
+    }
+  },
+  "lambdaLayers": [],
+  "environmentVariableList": [
+    {
+      "cloudFormationParameterName": "email",
+      "environmentVariableName": "EMAIL"
+    }
+  ]
+}
