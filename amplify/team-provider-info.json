@@ -18,7 +18,7 @@
       "function": {
         "wateringNotification": {
           "deploymentBucketName": "amplify-plantsky-staging-221837-deployment",
-          "s3Key": "amplify-builds/wateringNotification-542b525a58786d304946-build.zip",
+          "s3Key": "amplify-builds/wateringNotification-345a452f3458762b6737-build.zip",
           "email": "arstrel@gmail.com",
           "secretsPathAmplifyAppId": "d229upurn3znoj"
         }
