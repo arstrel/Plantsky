@@ -23,5 +23,9 @@
       "cloudFormationParameterName": "email",
       "environmentVariableName": "EMAIL"
     }
+  ],
+  "secretNames": [
+    "SENDER_EMAIL",
+    "SENDER_PASS"
   ]
 }

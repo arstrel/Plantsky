@@ -5,8 +5,11 @@
   "main": "index.js",
   "license": "Apache-2.0",
   "dependencies": {
+    "aws-sdk": "^2.1043.0",
     "axios": "^0.24.0",
     "graphql": "^16.0.1",
-    "graphql-tag": "^2.12.6"
+    "graphql-tag": "^2.12.6",
+    "nodemailer": "^6.7.2",
+    "nodemailer-smtp-transport": "^2.7.4"
   }
 }

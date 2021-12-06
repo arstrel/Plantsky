@@ -17,9 +17,10 @@
       },
       "function": {
         "wateringNotification": {
-          "email": "arstrel@gmail.com",
           "deploymentBucketName": "amplify-plantsky-staging-221837-deployment",
-          "s3Key": "amplify-builds/wateringNotification-706b3467722f48667175-build.zip"
+          "s3Key": "amplify-builds/wateringNotification-706b3467722f48667175-build.zip",
+          "email": "arstrel@gmail.com",
+          "secretsPathAmplifyAppId": "d229upurn3znoj"
         }
       }
     }
