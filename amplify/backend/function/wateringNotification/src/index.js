@@ -1,5 +1,4 @@
 const aws = require('aws-sdk');
-
 const axios = require('axios');
 const gql = require('graphql-tag');
 const graphql = require('graphql');
@@ -7,7 +6,7 @@ const { print } = graphql;
 const nodemailer = require('nodemailer');
 const smtpTransport = require('nodemailer-smtp-transport');
 
-async function sendEmail({ destinationEmail, text }) {
+async function sendEmail({ destinationEmail, subject = '', text = '' }) {
   const { Parameters } = await new aws.SSM()
     .getParameters({
       Names: ['SENDER_EMAIL', 'SENDER_PASS'].map(
@@ -16,19 +15,10 @@ async function sendEmail({ destinationEmail, text }) {
       WithDecryption: true,
     })
     .promise();
-  const { Parameters: params } = await new aws.SSM()
-    .getParameters({
-      Names: ['SENDER_EMAIL', 'SENDER_PASS'],
-      WithDecryption: true,
-    })
-    .promise();
-  // Parameters will be of the form { Name: 'secretName', Value: 'secretValue', ... }[]
 
-  console.log({ Parameters, params });
-
-  const senderEmail = 'plantsky.app@gmail.com';
-  const senderPass = '';
-
+  const senderEmail = Parameters[0].Value;
+  const senderPass = Parameters[1].Value;
+  console.log({ senderEmail, senderPass, destinationEmail, subject, text });
   const transporter = nodemailer.createTransport(
     smtpTransport({
       service: 'gmail',
@@ -42,8 +32,17 @@ async function sendEmail({ destinationEmail, text }) {
   const mailOptions = {
     from: senderEmail,
     to: destinationEmail,
-    subject: 'Some of your plants need watering',
-    text: text,
+    subject,
+    text,
+    html: `<html>
+    <h2>Some water please</h2>
+    <p>${text}</p>
+    <p>Check 
+    <a href="https://main.d229upurn3znoj.amplifyapp.com/" target="_blank" rel="noopener noreferrer">Plantsky</a>
+    for more details
+    </p>
+  </html>
+  `,
   };
 
   try {
@@ -111,32 +110,34 @@ const LIST_DRY_PLANTS_PER_USER = gql`
   }
 `;
 
-const UPDATE_NOTIFICATION_SENT_DATETIME = gql`
-  mutation updateFirstNotificationSent(
-    $id: ID!
-    $firstNotificationSentAt: String!
-    $_version: Number
-  ) {
-    updatePlant(
-      input: {
-        id: $id
-        firstNotificationSentAt: $firstNotificationSentAt
-        _version: $_version
-      }
-    ) {
-      id
-      _version
-      name
-      firstNotificationSentAt
-    }
-  }
-`;
+// Update Plants table firstNotificationSentAt
+// const UPDATE_NOTIFICATION_SENT_DATETIME = gql`
+//   mutation updateFirstNotificationSent(
+//     $id: ID!
+//     $firstNotificationSentAt: String!
+//     $_version: Number
+//   ) {
+//     updatePlant(
+//       input: {
+//         id: $id
+//         firstNotificationSentAt: $firstNotificationSentAt
+//         _version: $_version
+//       }
+//     ) {
+//       id
+//       _version
+//       name
+//       firstNotificationSentAt
+//     }
+//   }
+// `;
 
+// Update Mailing List table lastMessageSent
 const UPDATE_COMMUNICATION_SENT_DATETIME = gql`
   mutation updateCommunicationSentDatetime(
     $id: ID!
-    $lastMessageSent: String
-    $_version: Number
+    $lastMessageSent: AWSDateTime
+    $_version: Int
   ) {
     updateMailingList(
       input: { id: $id, lastMessageSent: $lastMessageSent, _version: $_version }
@@ -151,7 +152,7 @@ const UPDATE_COMMUNICATION_SENT_DATETIME = gql`
 
 exports.handler = async (event) => {
   try {
-    const maillist = await axios({
+    const maillistResponse = await axios({
       url: process.env.API_PLANTSKY_GRAPHQLAPIENDPOINTOUTPUT,
       method: 'post',
       headers: {
@@ -161,40 +162,82 @@ exports.handler = async (event) => {
         query: print(QUERY_MAILLIST),
       },
     });
-    console.log({ maillist: maillist.data.data.listMailingLists.items });
 
-    const now = '2021-12-14T23:34:33.693Z';
-    // const now = new Date().toISOString();
-    const dryPlantsPromises = maillist.data.data.listMailingLists.items.map(
-      ({ email }) => {
-        return axios({
-          url: process.env.API_PLANTSKY_GRAPHQLAPIENDPOINTOUTPUT,
-          method: 'post',
-          headers: {
-            'x-api-key': process.env.API_PLANTSKY_GRAPHQLAPIKEYOUTPUT,
-          },
-          data: {
-            query: print(LIST_DRY_PLANTS_PER_USER),
-            variables: { belongsTo: email, nextWater: now },
-          },
-        });
-      }
-    );
+    const maillist = maillistResponse.data.data.listMailingLists.items;
+    console.log({ maillist });
+
+    // const now = '2021-12-14T23:34:33.693Z'; // for testing
+    const now = new Date().toISOString();
+
+    const dryPlantsPromises = maillist.map(({ email }) => {
+      return axios({
+        url: process.env.API_PLANTSKY_GRAPHQLAPIENDPOINTOUTPUT,
+        method: 'post',
+        headers: {
+          'x-api-key': process.env.API_PLANTSKY_GRAPHQLAPIKEYOUTPUT,
+        },
+        data: {
+          query: print(LIST_DRY_PLANTS_PER_USER),
+          variables: { belongsTo: email, nextWater: now },
+        },
+      });
+    });
     const dryPlantsData = await Promise.all(dryPlantsPromises);
-    const dryPlants = dryPlantsData.flatMap(
+    const dryPlants = dryPlantsData.map(
       (res) => res.data.data.listPlants.items
     );
-    console.log({ dryPlants });
 
-    const emailResult = await sendEmail({
-      destinationEmail: 'arstrel@gmail.com',
-      text: 'Your plant is getting dry test email',
-    });
+    for (let [i, singleUserPlants] of Object.entries(dryPlants)) {
+      if (!singleUserPlants.length) {
+        continue;
+      }
+      console.log({ singleUserPlants });
+      const names =
+        singleUserPlants.length < 3
+          ? `${singleUserPlants.map((plant) => plant.name).join(', ')}`
+          : `${singleUserPlants
+              .slice(0, 2)
+              .map((plant) => plant.name)
+              .join(', ')} and ${singleUserPlants.length - 2} more`;
 
-    console.log({ emailResult });
+      const emailResult = await sendEmail({
+        destinationEmail: singleUserPlants[0].belongsTo,
+        subject: `Plantsky reminder: ${singleUserPlants.length} of your plants need watering`,
+        text: `${names} of your plants are running dry and need your attention.`,
+      });
+      console.log({ emailResult });
+
+      if (emailResult.isError) {
+        continue;
+      }
+
+      const currentRecepient = maillist[i];
+
+      console.log({ currentRecepient });
+
+      const updateMailListResult = await axios({
+        url: process.env.API_PLANTSKY_GRAPHQLAPIENDPOINTOUTPUT,
+        method: 'post',
+        headers: {
+          'x-api-key': process.env.API_PLANTSKY_GRAPHQLAPIKEYOUTPUT,
+        },
+        data: {
+          query: print(UPDATE_COMMUNICATION_SENT_DATETIME),
+          variables: {
+            id: currentRecepient.id,
+            lastMessageSent: new Date().toISOString(),
+            _version: currentRecepient._version,
+          },
+        },
+      });
+      console.log({
+        updateMailListResult: updateMailListResult.data.data,
+        err: updateMailListResult.data.errors,
+      });
+    }
 
     // for every email in this list - fetch plants where now time is > nextWater time
   } catch (err) {
-    console.log('error posting to appsync: ', err);
+    console.log('error sending dry plant notification: ', err);
   }
 };
