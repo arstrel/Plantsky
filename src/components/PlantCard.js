@@ -10,6 +10,7 @@ import Grid from '@mui/material/Grid';
 import { Plant } from 'models';
 import PlantCardHeader from 'components/PlantCardHeader';
 import Typography from '@mui/material/Typography';
+import add from 'date-fns/add';
 import isEmpty from 'lodash/isEmpty';
 
 export default function PlantCard({ plant }) {
@@ -19,7 +20,11 @@ export default function PlantCard({ plant }) {
     const original = await DataStore.query(Plant, id);
     const updated = await DataStore.save(
       Plant.copyOf(original, (updated) => {
-        updated.lastWatered = new Date().toISOString();
+        const now = new Date().toISOString();
+        updated.lastWatered = now;
+        updated.nextWater = add(new Date(now), {
+          days: updated.waterIntervalDays,
+        }).toISOString();
       })
     );
 
