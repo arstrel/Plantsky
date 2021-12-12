@@ -7,7 +7,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import React from 'react';
-import add from 'date-fns/add';
 import formatDistanceStrict from 'date-fns/formatDistanceStrict';
 
 export default function PlantDetailsDialog({ plant, isOpened, onClose }) {
@@ -19,10 +18,11 @@ export default function PlantDetailsDialog({ plant, isOpened, onClose }) {
     }
   );
   const nextWaterIn = formatDistanceStrict(
-    new Date(plant.lastWatered),
-    add(new Date(plant.lastWatered), {
-      days: plant.waterIntervalDays,
-    })
+    new Date(plant.nextWater),
+    new Date(),
+    {
+      addSuffix: true,
+    }
   );
 
   return (
@@ -56,9 +56,11 @@ export default function PlantDetailsDialog({ plant, isOpened, onClose }) {
               />
             </Grid>
             <Grid item sx={{ width: '100%' }}>
-              <Link href={plant.detailsURL} rel="noopener" target="_blank">
-                More info about {plant.name}
-              </Link>
+              {plant.detailsURL && (
+                <Link href={plant.detailsURL} rel="noopener" target="_blank">
+                  More info about {plant.name}
+                </Link>
+              )}
             </Grid>
             <Grid item sx={{ width: '100%' }}>
               <DialogContentText id="description-plant-text">
@@ -70,7 +72,7 @@ export default function PlantDetailsDialog({ plant, isOpened, onClose }) {
             </Grid>
             <Grid item sx={{ width: '100%' }}>
               <DialogContentText>
-                Next water in <strong>{nextWaterIn}</strong>
+                <strong>{`Next water ${nextWaterIn}`}</strong>
               </DialogContentText>
             </Grid>
             <Grid item sx={{ width: '100%' }}>

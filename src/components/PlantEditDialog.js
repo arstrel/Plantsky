@@ -16,6 +16,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { Plant } from 'models';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
+import add from 'date-fns/add';
 
 const initialSaveStatusState = {
   success: false,
@@ -64,6 +65,9 @@ export default function PlantEditDialog({
           updated.description = formValues.description;
           updated.lastWatered = formValues.lastWatered;
           updated.waterIntervalDays = formValues.waterIntervalDays;
+          updated.nextWater = add(new Date(formValues.lastWatered), {
+            days: formValues.waterIntervalDays,
+          }).toISOString();
         })
       );
 
