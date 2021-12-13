@@ -13,10 +13,23 @@ export default function PlantsList({ user }) {
       return;
     }
     (async () => {
-      const plants = await DataStore.query(Plant, (p) =>
+      const responsePlants = await DataStore.query(Plant, (p) =>
         p.belongsTo('eq', user.attributes.email)
       );
-      setPlants(plants);
+
+      if (responsePlants.length) {
+        setPlants(responsePlants);
+        return;
+      }
+
+      const subscription = DataStore.observe(Plant).subscribe((msg) => {
+        const freshPlant = msg.element;
+        if (freshPlant.belongsTo === user.attributes.email) {
+          setPlants((plants) => [...plants, msg.element]);
+        }
+      });
+
+      return () => subscription.unsubscribe();
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);

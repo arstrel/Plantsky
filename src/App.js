@@ -1,13 +1,12 @@
 import '@aws-amplify/ui-react/styles.css';
 
-import * as React from 'react';
-
 import Amplify from 'aws-amplify';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Copyright from 'components/Copyright';
 import PlantsList from 'components/PlantsList';
 import ProTip from 'components/ProTip';
+import React from 'react';
 import TopNav from 'components/TopNav';
 import Typography from '@mui/material/Typography';
 import awsExports from './aws-exports';

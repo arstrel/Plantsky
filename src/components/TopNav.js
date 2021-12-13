@@ -4,6 +4,7 @@ import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
+import { DataStore } from 'aws-amplify';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
@@ -40,6 +41,13 @@ const TopNav = ({ signOut, user }) => {
   };
   const onCloseAddDialog = () => {
     setIsAddDialogOpened(false);
+  };
+
+  const onSignOutClick = () => {
+    DataStore.clear().then(() => {
+      console.log('cleared');
+      signOut();
+    });
   };
 
   return (
@@ -135,7 +143,7 @@ const TopNav = ({ signOut, user }) => {
                 <Typography textAlign="center">Add Plant</Typography>
               </MenuItem>
               <Divider sx={{ display: { xs: 'none', md: 'flex' } }} />
-              <MenuItem onClick={signOut}>
+              <MenuItem onClick={onSignOutClick}>
                 <Typography textAlign="center">Sign Out</Typography>
               </MenuItem>
               <PlantAddDialog
