@@ -108,8 +108,7 @@ export default function PlantAddDialog({ user, isOpened, onClose }) {
     setTimeout(() => {
       clearStatus();
       onClose();
-      window.location.reload();
-    }, 2000);
+    }, 1500);
   };
 
   return (

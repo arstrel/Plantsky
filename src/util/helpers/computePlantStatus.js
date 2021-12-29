@@ -24,7 +24,7 @@ export const computeStatus = (plant) => {
   // now is before (watering time minus fifth) = green; OK
   const isInTheGreen = isBefore(now, fifthBeforeWatering);
   if (isInTheGreen) {
-    return { text: '✔', color: green[500] };
+    return { text: '✔', color: green[500], sortValue: 40 };
   }
 
   // now is between (watering time minus fifth) and (watering time) = yellow; OK
@@ -33,7 +33,7 @@ export const computeStatus = (plant) => {
     end: wateringDatetime,
   });
   if (isInTheYellow) {
-    return { text: 'OK', color: yellow[600] };
+    return { text: 'OK', color: yellow[600], sortValue: 30 };
   }
 
   // now is between (watering time plus fifth) = orange; DRY
@@ -42,12 +42,12 @@ export const computeStatus = (plant) => {
     end: fifthAfterWatering,
   });
   if (isInTheOrange) {
-    return { text: 'DRY', color: orange[500] };
+    return { text: 'DRY', color: orange[500], sortValue: 20 };
   }
 
   // now is past (watering time plus fifth) = red: SAD
   const isInTheRed = isAfter(now, fifthAfterWatering);
   if (isInTheRed) {
-    return { text: 'SAD', color: red[500] };
+    return { text: 'SAD', color: red[500], sortValue: 10 };
   }
 };

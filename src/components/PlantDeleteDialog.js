@@ -24,14 +24,15 @@ export default function PlantDeleteDialog({
   const onDeleteClick = async () => {
     try {
       const modelToDelete = await DataStore.query(Plant, plant.id);
-      DataStore.delete(modelToDelete);
+      await DataStore.delete(modelToDelete);
+
       setDeleteStatus({
         success: true,
         text: 'Plant deleted successfully',
         show: true,
       });
 
-      setTimeout(() => setCurrentPlant({}), 2500);
+      setTimeout(() => setCurrentPlant({}), 1500);
     } catch (e) {
       setDeleteStatus({
         success: false,
@@ -39,7 +40,7 @@ export default function PlantDeleteDialog({
         show: true,
       });
     }
-    setTimeout(onClose, 2000);
+    setTimeout(onClose, 1000);
   };
 
   return (

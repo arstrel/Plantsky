@@ -4,9 +4,20 @@ import { DataStore } from 'aws-amplify';
 import Grid from '@mui/material/Grid';
 import { Plant } from 'models';
 import PlantCard from 'components/PlantCard';
+import { computeStatus } from 'util/helpers/computePlantStatus';
 
 export default function PlantsList({ user }) {
-  const [plants, setPlants] = useState([]);
+  const [plants, setPlants] = useState({});
+
+  const getPlantsList = () => {
+    const plantsList = Object.values(plants);
+    const sorted = [...plantsList].sort((a, b) => {
+      const { sortValue: sortValueA } = computeStatus(a);
+      const { sortValue: sortValueB } = computeStatus(b);
+      return sortValueA - sortValueB;
+    });
+    return sorted;
+  };
 
   useEffect(() => {
     if (!user) {
@@ -18,14 +29,19 @@ export default function PlantsList({ user }) {
       );
 
       if (responsePlants.length) {
-        setPlants(responsePlants);
-        return;
+        setPlants(
+          responsePlants.reduce((acc, val) => ({ ...acc, [val.id]: val }), {})
+        );
       }
 
       const subscription = DataStore.observe(Plant).subscribe((msg) => {
         const freshPlant = msg.element;
-        if (freshPlant.belongsTo === user.attributes.email) {
-          setPlants((plants) => [...plants, msg.element]);
+
+        if (
+          !freshPlant._deleted &&
+          freshPlant.belongsTo === user.attributes.email
+        ) {
+          setPlants((plants) => ({ ...plants, [freshPlant.id]: freshPlant }));
         }
       });
 
@@ -36,7 +52,7 @@ export default function PlantsList({ user }) {
 
   return (
     <Grid container rowSpacing={4} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-      {plants?.map((plant) => (
+      {getPlantsList().map((plant) => (
         <PlantCard key={plant.id} plant={plant} />
       ))}
     </Grid>

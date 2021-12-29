@@ -99,6 +99,7 @@ const LIST_DRY_PLANTS_PER_USER = gql`
       items {
         id
         _version
+        _deleted
         name
         location
         imageURL
@@ -187,7 +188,13 @@ exports.handler = async (event) => {
       (res) => res.data.data.listPlants.items
     );
 
-    for (let [i, singleUserPlants] of Object.entries(dryPlants)) {
+    for (let [i, allSingleUserPlants] of Object.entries(dryPlants)) {
+      if (!allSingleUserPlants.length) {
+        continue;
+      }
+      const singleUserPlants = allSingleUserPlants.filter(
+        (plant) => !plant._deleted
+      );
       if (!singleUserPlants.length) {
         continue;
       }
