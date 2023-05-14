@@ -91,22 +91,6 @@
           "resourceName": "wateringNotification"
         }
       ]
-    },
-    "AMPLIFY_function_wateringNotification_senderEmail": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "wateringNotification"
-        }
-      ]
-    },
-    "AMPLIFY_function_wateringNotification_senderPass": {
-      "usedBy": [
-        {
-          "category": "function",
-          "resourceName": "wateringNotification"
-        }
-      ]
     }
   }
 }
