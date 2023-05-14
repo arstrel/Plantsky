@@ -3,11 +3,11 @@
   "serviceConfiguration": {
     "apiName": "Plantsky",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "/tmp/amplify-40ccefda-ef24-498f-814d-b1b8c0e769af/amplify/backend/api/Plantsky/schema.graphql",
     "defaultAuthType": {
       "mode": "API_KEY",
-      "keyDescription": "api key description",
-      "expirationTime": 30
+      "expirationTime": 365,
+      "apiKeyExpirationDate": "2024-05-13T02:39:19.735Z",
+      "keyDescription": "api key description"
     },
     "additionalAuthTypes": [
       {
