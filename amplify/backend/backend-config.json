@@ -1,35 +1,35 @@
 {
   "api": {
-    "Plantsky": {
+    "plantsky": {
       "dependsOn": [
         {
           "attributes": [
             "UserPoolId"
           ],
           "category": "auth",
-          "resourceName": "Plantsky"
+          "resourceName": "plantskyd6e2ca4b"
         }
       ],
       "output": {
         "authConfig": {
           "additionalAuthenticationProviders": [
             {
-              "authenticationType": "AWS_IAM"
+              "apiKeyConfig": {
+                "apiKeyExpirationDate": "2024-05-13T04:37:24.949Z",
+                "apiKeyExpirationDays": 365,
+                "description": "public api"
+              },
+              "authenticationType": "API_KEY"
             },
             {
-              "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-              "userPoolConfig": {
-                "userPoolId": "authPlantsky"
-              }
+              "authenticationType": "AWS_IAM"
             }
           ],
           "defaultAuthentication": {
-            "apiKeyConfig": {
-              "apiKeyExpirationDate": "2024-05-13T02:39:19.735Z",
-              "apiKeyExpirationDays": 365,
-              "description": "api key description"
-            },
-            "authenticationType": "API_KEY"
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authplantskyd6e2ca4b"
+            }
           }
         }
       },
@@ -38,7 +38,7 @@
     }
   },
   "auth": {
-    "Plantsky": {
+    "plantskyd6e2ca4b": {
       "customAuth": false,
       "dependsOn": [],
       "frontendAuthConfig": {
@@ -47,12 +47,7 @@
           "SMS"
         ],
         "passwordProtectionSettings": {
-          "passwordPolicyCharacters": [
-            "REQUIRES_LOWERCASE",
-            "REQUIRES_NUMBERS",
-            "REQUIRES_SYMBOLS",
-            "REQUIRES_UPPERCASE"
-          ],
+          "passwordPolicyCharacters": [],
           "passwordPolicyMinLength": 8
         },
         "signupAttributes": [
@@ -81,18 +76,37 @@
             "GraphQLAPIKeyOutput"
           ],
           "category": "api",
-          "resourceName": "Plantsky"
+          "resourceName": "plantsky"
         }
       ],
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     }
   },
-  "storage": {
-    "s3plantskystoraged229upurn3znoj": {
-      "dependsOn": [],
-      "providerPlugin": "awscloudformation",
-      "service": "S3"
+  "parameters": {
+    "AMPLIFY_function_wateringNotification_secretsPathAmplifyAppId": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "wateringNotification"
+        }
+      ]
+    },
+    "AMPLIFY_function_wateringNotification_senderEmail": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "wateringNotification"
+        }
+      ]
+    },
+    "AMPLIFY_function_wateringNotification_senderPass": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "wateringNotification"
+        }
+      ]
     }
   }
 }

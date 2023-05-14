@@ -54,6 +54,7 @@ export const schema = {
                         "rules": [
                             {
                                 "allow": "public",
+                                "provider": "apiKey",
                                 "operations": [
                                     "create",
                                     "update",
@@ -176,6 +177,7 @@ export const schema = {
                         "rules": [
                             {
                                 "allow": "public",
+                                "provider": "apiKey",
                                 "operations": [
                                     "create",
                                     "update",
@@ -191,5 +193,6 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
+    "codegenVersion": "3.4.3",
     "version": "90c59c57ac2d8f1f2485107fa96b00eb"
 };

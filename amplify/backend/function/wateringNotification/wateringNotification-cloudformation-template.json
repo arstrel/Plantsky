@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "{\"createdOn\":\"Mac\",\"createdBy\":\"Amplify\",\"createdWith\":\"7.5.2\",\"stackType\":\"function-Lambda\",\"metadata\":{}}",
+  "Description": "Lambda Function resource stack creation using Amplify CLI",
   "Parameters": {
     "CloudWatchRule": {
       "Type": "String",
@@ -16,23 +16,20 @@
     "s3Key": {
       "Type": "String"
     },
-    "apiPlantskyGraphQLAPIIdOutput": {
-      "Type": "String",
-      "Default": "apiPlantskyGraphQLAPIIdOutput"
-    },
-    "apiPlantskyGraphQLAPIEndpointOutput": {
-      "Type": "String",
-      "Default": "apiPlantskyGraphQLAPIEndpointOutput"
-    },
-    "apiPlantskyGraphQLAPIKeyOutput": {
-      "Type": "String",
-      "Default": "apiPlantskyGraphQLAPIKeyOutput"
-    },
-    "email": {
-      "Type": "String"
-    },
     "secretsPathAmplifyAppId": {
       "Type": "String"
+    },
+    "apiplantskyGraphQLAPIIdOutput": {
+      "Type": "String",
+      "Default": "apiplantskyGraphQLAPIIdOutput"
+    },
+    "apiplantskyGraphQLAPIEndpointOutput": {
+      "Type": "String",
+      "Default": "apiplantskyGraphQLAPIEndpointOutput"
+    },
+    "apiplantskyGraphQLAPIKeyOutput": {
+      "Type": "String",
+      "Default": "apiplantskyGraphQLAPIKeyOutput"
     }
   },
   "Conditions": {
@@ -89,17 +86,17 @@
               "Ref": "AWS::Region"
             },
             "API_PLANTSKY_GRAPHQLAPIIDOUTPUT": {
-              "Ref": "apiPlantskyGraphQLAPIIdOutput"
+              "Ref": "apiplantskyGraphQLAPIIdOutput"
             },
             "API_PLANTSKY_GRAPHQLAPIENDPOINTOUTPUT": {
-              "Ref": "apiPlantskyGraphQLAPIEndpointOutput"
+              "Ref": "apiplantskyGraphQLAPIEndpointOutput"
             },
             "API_PLANTSKY_GRAPHQLAPIKEYOUTPUT": {
-              "Ref": "apiPlantskyGraphQLAPIKeyOutput"
+              "Ref": "apiplantskyGraphQLAPIKeyOutput"
             },
             "API_PLANTSKY_MAILINGLISTTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apiPlantskyGraphQLAPIIdOutput}:GetAtt:MailingListTable:Name"
+                "Fn::Sub": "${apiplantskyGraphQLAPIIdOutput}:GetAtt:MailingListTable:Name"
               }
             },
             "API_PLANTSKY_MAILINGLISTTABLE_ARN": {
@@ -117,7 +114,7 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apiPlantskyGraphQLAPIIdOutput}:GetAtt:MailingListTable:Name"
+                      "Fn::Sub": "${apiplantskyGraphQLAPIIdOutput}:GetAtt:MailingListTable:Name"
                     }
                   }
                 ]
@@ -125,7 +122,7 @@
             },
             "API_PLANTSKY_PLANTTABLE_NAME": {
               "Fn::ImportValue": {
-                "Fn::Sub": "${apiPlantskyGraphQLAPIIdOutput}:GetAtt:PlantTable:Name"
+                "Fn::Sub": "${apiplantskyGraphQLAPIIdOutput}:GetAtt:PlantTable:Name"
               }
             },
             "API_PLANTSKY_PLANTTABLE_ARN": {
@@ -143,56 +140,9 @@
                   ":table/",
                   {
                     "Fn::ImportValue": {
-                      "Fn::Sub": "${apiPlantskyGraphQLAPIIdOutput}:GetAtt:PlantTable:Name"
+                      "Fn::Sub": "${apiplantskyGraphQLAPIIdOutput}:GetAtt:PlantTable:Name"
                     }
                   }
-                ]
-              ]
-            },
-            "EMAIL": {
-              "Ref": "email"
-            },
-            "SENDER_EMAIL": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Fn::Sub": [
-                      "/amplify/${appId}/${env}/AMPLIFY_${functionName}_",
-                      {
-                        "appId": {
-                          "Ref": "secretsPathAmplifyAppId"
-                        },
-                        "env": {
-                          "Ref": "env"
-                        },
-                        "functionName": "wateringNotification"
-                      }
-                    ]
-                  },
-                  "SENDER_EMAIL"
-                ]
-              ]
-            },
-            "SENDER_PASS": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Fn::Sub": [
-                      "/amplify/${appId}/${env}/AMPLIFY_${functionName}_",
-                      {
-                        "appId": {
-                          "Ref": "secretsPathAmplifyAppId"
-                        },
-                        "env": {
-                          "Ref": "env"
-                        },
-                        "functionName": "wateringNotification"
-                      }
-                    ]
-                  },
-                  "SENDER_PASS"
                 ]
               ]
             }
@@ -204,7 +154,7 @@
             "Arn"
           ]
         },
-        "Runtime": "nodejs14.x",
+        "Runtime": "nodejs18.x",
         "Layers": [],
         "Timeout": 25
       }
@@ -215,12 +165,12 @@
         "RoleName": {
           "Fn::If": [
             "ShouldNotCreateEnvResources",
-            "plantskyLambdaRolea10f9494",
+            "plantskyLambdaRole5cba74dd",
             {
               "Fn::Join": [
                 "",
                 [
-                  "plantskyLambdaRolea10f9494",
+                  "plantskyLambdaRole5cba74dd",
                   "-",
                   {
                     "Ref": "env"
@@ -286,189 +236,6 @@
                   }
                 ]
               }
-            }
-          ]
-        }
-      }
-    },
-    "AmplifyResourcesPolicy": {
-      "DependsOn": [
-        "LambdaExecutionRole"
-      ],
-      "Type": "AWS::IAM::Policy",
-      "Properties": {
-        "PolicyName": "amplify-lambda-execution-policy",
-        "Roles": [
-          {
-            "Ref": "LambdaExecutionRole"
-          }
-        ],
-        "PolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Action": [
-                "appsync:GraphQL"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:appsync:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":apis/",
-                      {
-                        "Ref": "apiPlantskyGraphQLAPIIdOutput"
-                      },
-                      "/types/Query/*"
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:appsync:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":apis/",
-                      {
-                        "Ref": "apiPlantskyGraphQLAPIIdOutput"
-                      },
-                      "/types/Mutation/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:Get*",
-                "dynamodb:BatchGetItem",
-                "dynamodb:List*",
-                "dynamodb:Describe*",
-                "dynamodb:Scan",
-                "dynamodb:Query",
-                "dynamodb:Update*",
-                "dynamodb:RestoreTable*"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apiPlantskyGraphQLAPIIdOutput}:GetAtt:MailingListTable:Name"
-                        }
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apiPlantskyGraphQLAPIIdOutput}:GetAtt:MailingListTable:Name"
-                        }
-                      },
-                      "/index/*"
-                    ]
-                  ]
-                }
-              ]
-            },
-            {
-              "Effect": "Allow",
-              "Action": [
-                "dynamodb:Get*",
-                "dynamodb:BatchGetItem",
-                "dynamodb:List*",
-                "dynamodb:Describe*",
-                "dynamodb:Scan",
-                "dynamodb:Query",
-                "dynamodb:Update*",
-                "dynamodb:RestoreTable*"
-              ],
-              "Resource": [
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apiPlantskyGraphQLAPIIdOutput}:GetAtt:PlantTable:Name"
-                        }
-                      }
-                    ]
-                  ]
-                },
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "arn:aws:dynamodb:",
-                      {
-                        "Ref": "AWS::Region"
-                      },
-                      ":",
-                      {
-                        "Ref": "AWS::AccountId"
-                      },
-                      ":table/",
-                      {
-                        "Fn::ImportValue": {
-                          "Fn::Sub": "${apiPlantskyGraphQLAPIIdOutput}:GetAtt:PlantTable:Name"
-                        }
-                      },
-                      "/index/*"
-                    ]
-                  ]
-                }
-              ]
             }
           ]
         }
@@ -569,6 +336,187 @@
       "DependsOn": [
         "LambdaExecutionRole"
       ]
+    },
+    "AmplifyResourcesPolicy": {
+      "DependsOn": [
+        "LambdaExecutionRole"
+      ],
+      "Type": "AWS::IAM::Policy",
+      "Properties": {
+        "PolicyName": "amplify-lambda-execution-policy",
+        "Roles": [
+          {
+            "Ref": "LambdaExecutionRole"
+          }
+        ],
+        "PolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "appsync:GraphQL"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apiplantskyGraphQLAPIIdOutput"
+                      },
+                      "/types/Query/*"
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:appsync:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":apis/",
+                      {
+                        "Ref": "apiplantskyGraphQLAPIIdOutput"
+                      },
+                      "/types/Mutation/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query",
+                "dynamodb:Update*",
+                "dynamodb:RestoreTable*"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apiplantskyGraphQLAPIIdOutput}:GetAtt:MailingListTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apiplantskyGraphQLAPIIdOutput}:GetAtt:MailingListTable:Name"
+                        }
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            },
+            {
+              "Effect": "Allow",
+              "Action": [
+                "dynamodb:Get*",
+                "dynamodb:BatchGetItem",
+                "dynamodb:List*",
+                "dynamodb:Describe*",
+                "dynamodb:Scan",
+                "dynamodb:Query"
+              ],
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apiplantskyGraphQLAPIIdOutput}:GetAtt:PlantTable:Name"
+                        }
+                      }
+                    ]
+                  ]
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:aws:dynamodb:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":table/",
+                      {
+                        "Fn::ImportValue": {
+                          "Fn::Sub": "${apiplantskyGraphQLAPIIdOutput}:GetAtt:PlantTable:Name"
+                        }
+                      },
+                      "/index/*"
+                    ]
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
     }
   },
   "Outputs": {
@@ -598,14 +546,6 @@
     "CloudWatchEventRule": {
       "Value": {
         "Ref": "CloudWatchEvent"
-      }
-    },
-    "LambdaExecutionRoleArn": {
-      "Value": {
-        "Fn::GetAtt": [
-          "LambdaExecutionRole",
-          "Arn"
-        ]
       }
     }
   }

@@ -1,7 +1,13 @@
 {
+  "lambdaLayers": [],
+  "environmentVariableList": [],
+  "secretNames": [
+    "SENDER_EMAIL",
+    "SENDER_PASS"
+  ],
   "permissions": {
     "api": {
-      "Plantsky": [
+      "plantsky": [
         "Query",
         "Mutation"
       ]
@@ -16,16 +22,5 @@
         "update"
       ]
     }
-  },
-  "lambdaLayers": [],
-  "environmentVariableList": [
-    {
-      "cloudFormationParameterName": "email",
-      "environmentVariableName": "EMAIL"
-    }
-  ],
-  "secretNames": [
-    "SENDER_EMAIL",
-    "SENDER_PASS"
-  ]
+  }
 }

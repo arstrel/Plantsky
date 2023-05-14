@@ -1,26 +1,26 @@
 {
-  "staging": {
+  "dev": {
     "awscloudformation": {
-      "AuthRoleName": "amplify-plantsky-staging-221837-authRole",
-      "UnauthRoleArn": "arn:aws:iam::362095673397:role/amplify-plantsky-staging-221837-unauthRole",
-      "AuthRoleArn": "arn:aws:iam::362095673397:role/amplify-plantsky-staging-221837-authRole",
+      "AuthRoleName": "amplify-plantsky-dev-204401-authRole",
+      "UnauthRoleArn": "arn:aws:iam::362095673397:role/amplify-plantsky-dev-204401-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::362095673397:role/amplify-plantsky-dev-204401-authRole",
       "Region": "us-east-1",
-      "DeploymentBucketName": "amplify-plantsky-staging-221837-deployment",
-      "UnauthRoleName": "amplify-plantsky-staging-221837-unauthRole",
-      "StackName": "amplify-plantsky-staging-221837",
-      "StackId": "arn:aws:cloudformation:us-east-1:362095673397:stack/amplify-plantsky-staging-221837/a34a9b70-4e3d-11ec-9593-12572f5cd093",
-      "AmplifyAppId": "d229upurn3znoj"
+      "DeploymentBucketName": "amplify-plantsky-dev-204401-deployment",
+      "UnauthRoleName": "amplify-plantsky-dev-204401-unauthRole",
+      "StackName": "amplify-plantsky-dev-204401",
+      "StackId": "arn:aws:cloudformation:us-east-1:362095673397:stack/amplify-plantsky-dev-204401/92003cf0-f209-11ed-b0f9-0a55104e3709",
+      "AmplifyAppId": "d29jjtnbu79pju"
     },
     "categories": {
       "auth": {
-        "Plantsky": {}
+        "plantskyd6e2ca4b": {}
+      },
+      "api": {
+        "plantsky": {}
       },
       "function": {
         "wateringNotification": {
-          "deploymentBucketName": "amplify-plantsky-staging-221837-deployment",
-          "s3Key": "amplify-builds/wateringNotification-345a452f3458762b6737-build.zip",
-          "email": "arstrel@gmail.com",
-          "secretsPathAmplifyAppId": "d229upurn3znoj"
+          "secretsPathAmplifyAppId": "d29jjtnbu79pju"
         }
       }
     }

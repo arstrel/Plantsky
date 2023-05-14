@@ -1,41 +1,83 @@
-import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplify/datastore";
+import { ModelInit, MutableModel, __modelMeta__, ManagedIdentifier } from "@aws-amplify/datastore";
+// @ts-ignore
+import { LazyLoading, LazyLoadingDisabled } from "@aws-amplify/datastore";
 
 
 
 
 
-type MailingListMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
-type PlantMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
-export declare class MailingList {
+type EagerMailingList = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<MailingList, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
   readonly id: string;
-  readonly lastMessageSent?: string;
-  readonly email?: string;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  constructor(init: ModelInit<MailingList, MailingListMetaData>);
-  static copyOf(source: MailingList, mutator: (draft: MutableModel<MailingList, MailingListMetaData>) => MutableModel<MailingList, MailingListMetaData> | void): MailingList;
+  readonly lastMessageSent?: string | null;
+  readonly email?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
 }
 
-export declare class Plant {
+type LazyMailingList = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<MailingList, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
   readonly id: string;
-  readonly name?: string;
-  readonly location?: string;
-  readonly imageURL?: string;
-  readonly lastWatered?: string;
-  readonly nextWater?: string;
-  readonly detailsURL?: string;
-  readonly description?: string;
-  readonly belongsTo?: string;
-  readonly firstNotificationSentAt?: string;
-  readonly waterIntervalDays?: number;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  constructor(init: ModelInit<Plant, PlantMetaData>);
-  static copyOf(source: Plant, mutator: (draft: MutableModel<Plant, PlantMetaData>) => MutableModel<Plant, PlantMetaData> | void): Plant;
+  readonly lastMessageSent?: string | null;
+  readonly email?: string | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type MailingList = LazyLoading extends LazyLoadingDisabled ? EagerMailingList : LazyMailingList
+
+export declare const MailingList: (new (init: ModelInit<MailingList>) => MailingList) & {
+  copyOf(source: MailingList, mutator: (draft: MutableModel<MailingList>) => MutableModel<MailingList> | void): MailingList;
+}
+
+type EagerPlant = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Plant, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name?: string | null;
+  readonly location?: string | null;
+  readonly imageURL?: string | null;
+  readonly lastWatered?: string | null;
+  readonly nextWater?: string | null;
+  readonly detailsURL?: string | null;
+  readonly description?: string | null;
+  readonly belongsTo?: string | null;
+  readonly firstNotificationSentAt?: string | null;
+  readonly waterIntervalDays?: number | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+type LazyPlant = {
+  readonly [__modelMeta__]: {
+    identifier: ManagedIdentifier<Plant, 'id'>;
+    readOnlyFields: 'createdAt' | 'updatedAt';
+  };
+  readonly id: string;
+  readonly name?: string | null;
+  readonly location?: string | null;
+  readonly imageURL?: string | null;
+  readonly lastWatered?: string | null;
+  readonly nextWater?: string | null;
+  readonly detailsURL?: string | null;
+  readonly description?: string | null;
+  readonly belongsTo?: string | null;
+  readonly firstNotificationSentAt?: string | null;
+  readonly waterIntervalDays?: number | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+}
+
+export declare type Plant = LazyLoading extends LazyLoadingDisabled ? EagerPlant : LazyPlant
+
+export declare const Plant: (new (init: ModelInit<Plant>) => Plant) & {
+  copyOf(source: Plant, mutator: (draft: MutableModel<Plant>) => MutableModel<Plant> | void): Plant;
 }

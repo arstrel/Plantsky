@@ -1,2 +1,3 @@
 src/models
 jsconfig.json
+amplify-codegen-temp/models

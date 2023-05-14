@@ -1,27 +1,27 @@
 {
   "version": 1,
   "serviceConfiguration": {
-    "apiName": "Plantsky",
+    "apiName": "plantsky",
     "serviceName": "AppSync",
     "defaultAuthType": {
-      "mode": "API_KEY",
-      "expirationTime": 365,
-      "apiKeyExpirationDate": "2024-05-13T02:39:19.735Z",
-      "keyDescription": "api key description"
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authplantskyd6e2ca4b"
     },
-    "additionalAuthTypes": [
-      {
-        "mode": "AWS_IAM"
-      },
-      {
-        "mode": "AMAZON_COGNITO_USER_POOLS",
-        "cognitoUserPoolId": "authPlantsky"
-      }
-    ],
     "conflictResolution": {
       "defaultResolutionStrategy": {
         "type": "AUTOMERGE"
       }
-    }
+    },
+    "additionalAuthTypes": [
+      {
+        "mode": "API_KEY",
+        "expirationTime": 365,
+        "apiKeyExpirationDate": "2024-05-13T04:37:24.949Z",
+        "keyDescription": "public api"
+      },
+      {
+        "mode": "AWS_IAM"
+      }
+    ]
   }
 }
